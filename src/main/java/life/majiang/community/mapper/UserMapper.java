@@ -3,6 +3,7 @@ package life.majiang.community.mapper;
 import life.majiang.community.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,7 @@ public interface UserMapper {
     public List<User> findAll();
     @Select( "select * from test" )
     public void test();
+
+    @Select( "select * from user where token = #{token}" )
+    User findByToken(@Param( "token" ) String token);
 }
