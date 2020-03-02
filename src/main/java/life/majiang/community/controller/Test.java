@@ -22,4 +22,5 @@ public class Test {
         userMapper.insert( user );
         return "index";
     }
+
 }

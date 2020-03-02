@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @Mapper
 public interface UserMapper {
-    @Insert( "INSERT INTO USER (NAME,ACCOUNT_ID,TOKEN,GMT_CREATE,GMT_MODIFED) VALUES (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified})" )
+    @Insert( "INSERT INTO USER (NAME,ACCOUNT_ID,TOKEN,GMT_CREATE,GMT_MODIFED,avatarUrl) VALUES (#{name},#{accountId},#{token},#{gmtCreate},#{gmtModified},#{avatarUrl})" )
     public void insert(User user);
     @Select( "select * from user" )
     public List<User> findAll();
@@ -22,4 +22,7 @@ public interface UserMapper {
 
     @Select( "select * from user where token = #{token}" )
     User findByToken(@Param( "token" ) String token);
+
+    @Select( "select * from user where id = #{id}" )
+    User findByID(Long creator);
 }

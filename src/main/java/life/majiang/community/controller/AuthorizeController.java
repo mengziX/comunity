@@ -54,10 +54,10 @@ public class AuthorizeController {
             user.setAccountId( String.valueOf( githubUser.getId() ) );
             user.setGmtCreate( System.currentTimeMillis() );
             user.setGmtModified( user.getGmtModified() );
+            user.setAvatarUrl( githubUser.getAvatar_url() );
             userMapper.insert( user );
-            System.out.println("test..........");
             response.addCookie( new Cookie( "token",token ) );
-//            request.getSession().setAttribute( "user",user );
+            request.getSession().setAttribute( "user",user );
             return "redirect:/";
         }else {
             return "redirect:/";
