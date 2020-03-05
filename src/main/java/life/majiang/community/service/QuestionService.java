@@ -14,4 +14,8 @@ public interface QuestionService {
 //    List<QuestionDTO> list();
 
     PaginationDTO list(Integer page,Integer size);
+    List<QuestionDTO> questionListDTO(Integer page,Integer size);
+    List<Question> questionList(Integer page,Integer size);
+    List<Question> questionListByUser(Long userId,Integer page,Integer size);
+    public List<QuestionDTO> questionListDTOByUser(Long userId,Integer page, Integer size) ;
 }

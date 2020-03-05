@@ -1,5 +1,6 @@
 package life.majiang.community.mapper;
 
+import com.github.pagehelper.Page;
 import life.majiang.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,4 +24,10 @@ public interface QuestionMapper {
 
     @Select( "select count(1) from question" )
     Integer count();
+
+    @Select("SELECT * FROM question")
+    Page<Question> getQuestionList();
+
+    @Select("SELECT * FROM question where creator=#{userId}")
+    Page<Question> getQuestionListByUser(@Param( value = "userId")Long userId);
 }

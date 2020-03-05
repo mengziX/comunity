@@ -1,5 +1,7 @@
 package life.majiang.community.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.dto.QuestionDTO;
 import life.majiang.community.mapper.QuestionMapper;
@@ -65,4 +67,48 @@ public class QuestionServiceImpl implements QuestionService{
         paginationDTO.setQuestions( questionDTOList );
         return paginationDTO;
     }
+
+    @Override
+    public List<QuestionDTO> questionListDTO(Integer page, Integer size) {
+        PageHelper.startPage(page,size,true);
+        List<Question> questions = questionMapper.getQuestionList();
+
+        List<QuestionDTO> questionDTOList  = new ArrayList<>(  );
+        for(Question question:questions){
+            User user =userMapper.findByID(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties( question,questionDTO );
+            questionDTO.setUser( user );
+            questionDTOList.add( questionDTO );
+        }
+        return questionDTOList;
+    }
+
+    public List<Question> questionList(Integer page, Integer size) {
+        PageHelper.startPage(page,size,true);
+        List<Question> questions = questionMapper.getQuestionList();
+        return questions;
+    }
+
+    public List<QuestionDTO> questionListDTOByUser(Long userId,Integer page, Integer size) {
+        PageHelper.startPage(page,size,true);
+        List<Question> questions = questionMapper.getQuestionListByUser(userId);
+
+        List<QuestionDTO> questionDTOList  = new ArrayList<>(  );
+        for(Question question:questions){
+            User user =userMapper.findByID(question.getCreator());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties( question,questionDTO );
+            questionDTO.setUser( user );
+            questionDTOList.add( questionDTO );
+        }
+        return questionDTOList;
+    }
+    public List<Question> questionListByUser(Long userId,Integer page, Integer size) {
+        PageHelper.startPage(page,size);
+        List<Question> questions = questionMapper.getQuestionListByUser(userId );
+        PageInfo pageInfo = new PageInfo( questions );
+        return questions;
+    }
+
 }

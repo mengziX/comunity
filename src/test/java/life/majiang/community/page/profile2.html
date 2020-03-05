@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${sectionName}"></title>
+    <head th:insert="~{import :: head}"></head>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid main profile">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <!--<h2><span th:text="${sectionName}"></span></h2>-->
+            <h3><span class="glyphicon glyphicon-list" aria-hidden="true"></span>我关注的问题</h3>
+            <hr>
+
+            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section == 'questions'}">-->
+                <div class="media" th:each="question : ${pageInfo.list}">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded"
+                                 th:src="${question.user.avatarUrl}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a th:href="@{'/question/'+ ${question.id}}" th:text="${question.title}"></a>
+                        </h4>
+                        <span class="text-desc">
+                        <span th:text="${question.commentCount}"></span> 个回复 • <span
+                                th:text="${question.viewCount}"></span> 次浏览 • <span
+                                th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> •
+                        <a th:href="@{'/publish/'+${question.id}}" class="community-menu"
+                           th:if="${session.user != null && session.user.id == question.creator}">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true">编辑</span>
+                    </a>
+                    </span>
+                    </div>
+                </div>
+                <ul class="pagination pull-left no-margin">
+
+                    <!-- 首页 -->
+                    <li>
+                        <a th:href="'/questionPage?pageNum=0'">首页</a>
+                    </li>
+
+                    <!--/questionPage-->
+                    <!--@{/(page=${page})}-->
+                    <!-- 上一页 -->
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="'/questionPage?pageNum=' + ${pageInfo.pageNum-1}" th:text="上一页"></a>
+                    </li>
+
+                    <!-- 中间页 -->
+                    <li th:each="pageNum:${#numbers.sequence(0, pageInfo.pages - 1)}">
+                        <a th:href="'/questionPage?pageNum='+${pageNum+1}" th:text="${pageNum+1}" th:if="${pageNum ne pageInfo.pageNum-1}"></a>
+                        <a th:href="'/questionPage?pageNum='+${pageNum+1}" th:text="${pageNum+1}" th:if="${pageNum eq pageInfo.pageNum-1}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                    </li>
+
+                    <!-- 下一页 -->
+                    <li th:if="${pageInfo.hasNextPage}">
+                        <a th:href="'/questionPage?pageNum=' + ${(pageInfo.pageNum+1)}" th:text="下一页"></a>
+                    </li>
+
+                    <!-- 尾页 -->
+                    <li>
+                        <a th:href="'/questionPage?pageNum=' + ${pageInfo.pages - 1}">尾页</a>
+                    </li>
+
+                </ul>
+        </div>
+        <div>
+            <h2><span th:text="${sectiorName}"></span></h2>
+            <hr>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <div class="list-group section">
+                <a href="/profile2/questions"
+                   th:class="${section == 'questions'}? 'active list-group-item' : 'list-group-item'">我的问题</a>
+                <a href="/profile2/replies"
+                   th:class="${section == 'replies'}? 'active list-group-item' : 'list-group-item'">
+                    最新回复
+                    <span class="badge" >14</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="~{footer :: foot}"></div>
+</body>
+</html>
