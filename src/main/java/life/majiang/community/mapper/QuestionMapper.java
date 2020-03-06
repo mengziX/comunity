@@ -2,10 +2,8 @@ package life.majiang.community.mapper;
 
 import com.github.pagehelper.Page;
 import life.majiang.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import life.majiang.community.model.User;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.List;
 @Component
 @Mapper
 public interface QuestionMapper {
-    @Insert( "insert into question (title,discription,gmt_create,gmt_modified,creator,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})" )
+    @Insert( "insert into question (title,description,gmt_create,gmt_modified,creator,tag) values (#{title},#{description},#{gmt_Create},#{gmt_Modified},#{creator},#{tag})" )
     void create(Question question);
 
     @Select( "select * from question limit #{offset},#{size}" )
@@ -30,4 +28,10 @@ public interface QuestionMapper {
 
     @Select("SELECT * FROM question where creator=#{userId}")
     Page<Question> getQuestionListByUser(@Param( value = "userId")Long userId);
+
+    @Select("SELECT * FROM question where id=#{id}")
+    Question getById(Long id);
+
+    @Update( "update question set title=#{title},description=#{description},gmt_modified=#{gmt_Modified},tag=#{tag}" )
+    void Update(Question question);
 }

@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,9 +17,18 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id")Long id,Model model){
+        Question question = questionService.getById( id );
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description",question.getDescription());
+        model.addAttribute("tag",question.getTag());
+        model.addAttribute( "id",question.getId() );
+        return "publish";
+    }
+
     @GetMapping("/publish")
     public String publish(Model model) {
-//        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -69,9 +75,11 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-//        question.setId(id);
-//        questionService.createOrUpdate(question);
-        questionService.create(question);
+        question.setId(id);
+        question.setGmt_Create( System.currentTimeMillis() );
+        question.setGmt_Modified( question.getGmt_Create() );
+        questionService.createOrUpdate(question);
+//        questionService.create(question);
         return "redirect:/";
     }
 }

@@ -3,23 +3,26 @@ package life.majiang.community.dto;
 import life.majiang.community.model.User;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class QuestionDTO {
+
     private Long id;
 
     private String title;
 
-    private Long gmtCreate;
+    private Long gmt_Create;
 
-    private Long gmtModified;
+    private Long gmt_Modified;
 
     private Long creator;
 
-    private Integer commentCount;
+    private Integer comment_Count;
 
-    private Integer viewCount;
+    private Integer view_Count;
 
-    private Integer likeCount;
+    private Integer like_Count;
 
     private String tag;
 

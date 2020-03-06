@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.dto.QuestionDTO;
+import life.majiang.community.mapper.QuestionExtMapper;
 import life.majiang.community.mapper.QuestionMapper;
 import life.majiang.community.mapper.UserMapper;
 import life.majiang.community.model.Question;
@@ -12,36 +13,26 @@ import life.majiang.community.service.QuestionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class QuestionServiceImpl implements QuestionService{
     @Autowired
     QuestionMapper questionMapper;
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    QuestionExtMapper questionExtMapper;
     @Override
     public void create(Question question) {
         questionMapper.create( question );
     }
-
-//    @Override
-//    public List<QuestionDTO> list() {
-//        List<Question> questions = questionMapper.list();
-//        List<QuestionDTO> questionDTOList = new ArrayList<>();
-//        for(Question question:questions){
-//            User user =userMapper.findByID(question.getCreator());
-//            QuestionDTO questionDTO = new QuestionDTO();
-//            BeanUtils.copyProperties( question,questionDTO );
-//            questionDTO.setUser( user );
-//            questionDTOList.add( questionDTO );
-//        }
-//        return questionDTOList;
-//    }
-
     @Override
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -104,11 +95,36 @@ public class QuestionServiceImpl implements QuestionService{
         }
         return questionDTOList;
     }
+
+    @Override
+    public Question getById(Long id) {
+        return questionMapper.getById(id);
+    }
+
     public List<Question> questionListByUser(Long userId,Integer page, Integer size) {
         PageHelper.startPage(page,size);
         List<Question> questions = questionMapper.getQuestionListByUser(userId );
         PageInfo pageInfo = new PageInfo( questions );
         return questions;
+    }
+
+    @Override
+    public void createOrUpdate(Question question) {
+        Question question1 = questionMapper.getById( question.getId() );
+        if(question1==null){
+            question.setGmt_Create( System.currentTimeMillis() );
+            question.setGmt_Modified( question.getGmt_Create() );
+            questionMapper.create( question );
+        }else{
+            question.setGmt_Modified( question.getGmt_Create() );
+            questionMapper.Update(question);
+        }
+    }
+    public void incView(Long id){
+        Question record= new Question();
+        record.setId( id );
+        record.setView_Count( 1 );
+        questionExtMapper.incView( record );
     }
 
 }

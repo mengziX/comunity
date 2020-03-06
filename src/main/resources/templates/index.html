@@ -38,7 +38,6 @@
             </ul>
 
             <div class="media" th:each="question : ${pagination.questions}">
-            <!--<div class="media" th:each="question dfs: ${questions}">-->
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounded"
@@ -49,9 +48,9 @@
                     <h4 class="media-heading">
                         <a th:href="@{'/question/'+ ${question.id}}" th:text="${question.title}"></a>
                     </h4>
-                    <span class="text-desc"><span th:text="${question.commentCount}"></span> 个回复 • <span
-                            th:text="${question.viewCount}"></span> 次浏览 • <span
-                            th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
+                    <span class="text-desc"><span th:text="${question.comment_Count}"></span> 个回复 • <span
+                            th:text="${question.view_Count}"></span> 次浏览 • <span
+                            th:text="${#dates.format(question.gmt_Create,'yyyy-MM-dd HH:mm')}"></span></span>
                 </div>
             </div>
             <nav aria-label="Page navigation">

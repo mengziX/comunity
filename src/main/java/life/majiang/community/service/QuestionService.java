@@ -18,4 +18,7 @@ public interface QuestionService {
     List<Question> questionList(Integer page,Integer size);
     List<Question> questionListByUser(Long userId,Integer page,Integer size);
     public List<QuestionDTO> questionListDTOByUser(Long userId,Integer page, Integer size) ;
+    public Question getById(Long id);
+    public void createOrUpdate(Question question);
+    public void incView(Long id);
 }

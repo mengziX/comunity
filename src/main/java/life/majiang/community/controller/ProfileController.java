@@ -42,8 +42,9 @@ public class ProfileController {
                                  @RequestParam(name = "pageSize", defaultValue = "3")Integer pageSize){
         ModelAndView modelAndView = new ModelAndView( "profile2" );
 
-        Long userId=0l;
-        userId=getUerId( request );
+        User user = (User) request.getSession().getAttribute("user");
+        if(user==null) modelAndView.setViewName( "redirect:/" );
+        Long userId=user.getId();
 
         List<Question>questions = questionService.questionListByUser(userId,pageNum,pageSize );
         PageInfo pageInfo = new PageInfo( questions );
@@ -57,8 +58,9 @@ public class ProfileController {
     }
     @GetMapping("/profile2/{action}")
     public String profile(HttpServletRequest request,@PathVariable( name ="action" ) String action, Model model){
-        Long userId=0l;
-        userId=getUerId( request );
+        User user = (User) request.getSession().getAttribute("user");
+        if(user==null) return "redirect:/";
+        Long userId=user.getId();
 
         List<Question>questions = questionService.questionListByUser(userId,1,3 );
         PageInfo pageInfo = new PageInfo( questions );
@@ -77,22 +79,6 @@ public class ProfileController {
         }
         return "profile2";
     }
-    private Long getUerId(HttpServletRequest request){
-        Long userId=0l;
-        Cookie[] cookies = request.getCookies();
-        if(cookies!=null && cookies.length!=0) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals( "token" )) {
-                    String token = cookie.getValue();
-                    User user = userMapper.findByToken( token );
-                    if (user != null) {
-                        userId=user.getId();
-                    }
-                    break;
-                }
-            }
-        }
-        return userId;
-    }
+
 }
 

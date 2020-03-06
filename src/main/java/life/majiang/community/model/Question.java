@@ -9,17 +9,17 @@ public class Question {
 
     private String title;
 
-    private Long gmtCreate;
+    private Long gmt_Create;
 
-    private Long gmtModified;
+    private Long gmt_Modified;
 
     private Long creator;
 
-    private Integer commentCount;
+    private Integer comment_Count;
 
-    private Integer viewCount;
+    private Integer view_Count;
 
-    private Integer likeCount;
+    private Integer like_Count;
 
     private String tag;
 
