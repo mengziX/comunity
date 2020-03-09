@@ -30,4 +30,14 @@ public interface UserMapper {
 
     @Select( "select * from user where ACCOUNT_ID=#{accountId}" )
     User findByAcountId(String acountId);
+
+
+    @Select({
+            "<script>" +
+                    "select * from user where ID in " +
+                    "<foreach item = 'item' index = 'index' collection = 'ids' open='(' separator=',' close=')' >" +
+                    "#{item}" +
+                    "</foreach>"+
+                    "</script>"})
+    List<User> selectByExample(@Param( value = "ids")List<Long> ids);
 }

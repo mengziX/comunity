@@ -34,4 +34,7 @@ public interface QuestionMapper {
 
     @Update( "update question set title=#{title},description=#{description},gmt_modified=#{gmt_Modified},tag=#{tag}" )
     void Update(Question question);
+
+    @Select( "select * from QUESTION where ID = #{id}" )
+    Question selectByPrimaryKey(Long id);
 }

@@ -13,6 +13,7 @@ public interface QuestionExtMapper {
     @Update( "update QUESTION set VIEW_COUNT = VIEW_COUNT + #{view_Count} where id = #{id}" )
     int incView(Question record);
 
+    @Update( "update QUESTION set COMMENT_COUNT = COMMENT_COUNT + #{comment_Count} where id = #{id}" )
     int incCommentCount(Question record);
 
     List<Question> selectRelated(Question question);
