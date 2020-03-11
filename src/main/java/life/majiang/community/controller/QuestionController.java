@@ -46,9 +46,12 @@ public class QuestionController {
         Integer questionType = 1;
         List<CommentDTO> comments = commentService.listByTargetId(questionId, questionType);
 
+        List<QuestionDTO> relatedQuestions = questionService.selectRelated(questionDTO);
+
         questionService.incView(questionId);
         model.addAttribute( "question", questionDTO);
         model.addAttribute("comments", comments);
+        model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
 }

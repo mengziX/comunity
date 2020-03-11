@@ -12,7 +12,7 @@ public class CommentDTO {
     private Long gmt_Create;
     private Long gmt_Modified;
     private Long like_Count;
-    private Integer commentCount;
+    private Integer comment_Count;
     private String content;
     private User user;
 }

@@ -1,15 +1,15 @@
-package life.majiang.community.model;
+package life.majiang.community.dto;
 
 import lombok.Data;
 
+/**
+ * Created by codedrinker on 2019/6/14.
+ */
 @Data
-public class Notification {
-
+public class NotificationDTO {
     private Long id;
 
     private Long notifier;
-
-    private Long receiver;
 
     private Long outerid;
 
@@ -22,5 +22,7 @@ public class Notification {
     private String notifier_Name;
 
     private String outer_Title;
+
+    private String typeName;
 
 }

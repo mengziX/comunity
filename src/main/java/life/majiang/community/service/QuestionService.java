@@ -21,4 +21,5 @@ public interface QuestionService {
     public Question getById(Long id);
     public void createOrUpdate(Question question);
     public void incView(Long id);
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO);
 }

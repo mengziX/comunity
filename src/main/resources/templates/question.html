@@ -104,7 +104,7 @@
                                 <span th:data-id="${comment.id}"
                                       onclick="collapseComments(this)" class="comment-icon">
                                     <span class="glyphicon glyphicon-comment"></span>
-                                    <span th:text="${comment.commentCount}"></span>
+                                    <span th:text="${comment.comment_Count}"></span>
                                 </span>
                                 <span class="pull-right"
                                       th:text="${#dates.format(comment.gmt_Create,'yyyy-MM-dd')}"></span>
@@ -172,8 +172,8 @@
                 </div>
             </div>
             <div th:insert="~{notice :: notice}"></div>
-            <div th:insert="~{side :: side}"></div>
-            <!--相关问题-->
+            <!--<div th:insert="~{side :: side}"></div>-->
+            相关问题
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>相关问题</h4>
@@ -186,6 +186,6 @@
         </div>
     </div>
 </div>
-<div th:insert="~{footer :: foot}"></div>
+<!--<div th:insert="~{footer :: foot}"></div>-->
 </body>
 </html>

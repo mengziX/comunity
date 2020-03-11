@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
     UserMapper userMapper;
     @Transactional
     public void insert(Comment comment, User commentator) {
-        if (comment.getParentId() == null || comment.getParentId() == 0) {
+        if (comment.getParent_Id() == null || comment.getParent_Id() == 0) {
             throw new CustomizeException( CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
         if (comment.getType() == null || !CommentTypeEnum.isExist(comment.getType())) {
@@ -47,55 +47,56 @@ public class CommentServiceImpl implements CommentService {
         }
         if (comment.getType() == CommentTypeEnum.COMMENT.getType()) {
             // 回复评论
-            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
+            Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParent_Id());
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
 
             // 回复问题
-            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
-            if (question == null) {
-                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            Question question =null;
+            if(dbComment.getParent_Id()!=null){
+                 questionMapper.selectByPrimaryKey(dbComment.getParent_Id());
+                if (question == null) {
+                    throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+                }
             }
+
 
             commentMapper.insert(comment);
 
             // 增加评论数
             Comment parentComment = new Comment();
-            parentComment.setId(comment.getParentId());
-            parentComment.setCommentCount(1);
-            commentExtMapper.incCommentCount(parentComment);
-
+            parentComment.setId(comment.getParent_Id());
+            parentComment.setComment_Count(1);
             // 创建通知
             createNotify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
         } else {
             // 回复问题
-            Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
+            Question question = questionMapper.selectByPrimaryKey(comment.getParent_Id());
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
-            comment.setCommentCount(0);
+            comment.setComment_Count(0);
             commentMapper.insert(comment);
             question.setComment_Count(1);
             questionExtMapper.incCommentCount(question);
-
             // 创建通知
             createNotify(comment, question.getCreator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_QUESTION, question.getId());
         }
     }
     private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
-        if (receiver == comment.getCommentator()) {
-            return;
-        }
+//        if (receiver == comment.getCommentator()) {
+//            return;
+//        }
         Notification notification = new Notification();
-        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setGmt_Create(System.currentTimeMillis());
         notification.setType(notificationType.getType());
         notification.setOuterid(outerId);
         notification.setNotifier(comment.getCommentator());
         notification.setStatus( NotificationStatusEnum.UNREAD.getStatus());
         notification.setReceiver(receiver);
-        notification.setNotifierName(notifierName);
-        notification.setOuterTitle(outerTitle);
+        notification.setNotifier_Name(notifierName);
+        notification.setOuter_Title(outerTitle);
         notificationMapper.insert(notification);
     }
     public List<CommentDTO>  listByTargetId(Long id, Integer type){

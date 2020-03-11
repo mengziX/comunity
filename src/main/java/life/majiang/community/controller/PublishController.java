@@ -1,5 +1,6 @@
 package life.majiang.community.controller;
 
+import life.majiang.community.cache.TagCache;
 import life.majiang.community.mapper.QuestionMapper;
 import life.majiang.community.model.Question;
 import life.majiang.community.model.User;
@@ -29,6 +30,7 @@ public class PublishController {
 
     @GetMapping("/publish")
     public String publish(Model model) {
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 

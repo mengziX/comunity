@@ -40,4 +40,7 @@ public interface UserMapper {
                     "</foreach>"+
                     "</script>"})
     List<User> selectByExample(@Param( value = "ids")List<Long> ids);
+
+    @Select( "select * from user where TOKEN=#{token}" )
+    List<User> selectByToken(@Param( value = "token")String token);
 }

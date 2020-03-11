@@ -22,9 +22,9 @@ public interface CommentMapper {
     int deleteByPrimaryKey(Long id);
 
     @Insert( "insert into COMMENT (ID, PARENT_ID, TYPE,COMMENTATOR, GMT_CREATE, GMT_MODIFIED,  LIKE_COUNT, CONTENT, COMMENT_COUNT)" +
-            " values (#{id}, #{parentId}, #{type}, " +
-            "#{commentator}, #{gmtCreate}, #{gmtModified}," +
-            "#{likeCount}, #{content}, #{commentCount})" )
+            " values (#{id}, #{parent_Id}, #{type}, " +
+            "#{commentator}, #{gmt_Create}, #{gmt_Modified}," +
+            "#{like_Count}, #{content}, #{comment_Count})" )
     int insert(Comment record);
 
     int insertSelective(Comment record);
